@@ -21,6 +21,17 @@ export default defineConfig({
       // This does not serialise api against e2e — both simply start after the
       // single reseed, which is safe because API tests only assert on records
       // they created (or on seeded accounts they merely log in as).
+      //
+      // It is NOT safe to run the two projects in ONE invocation, though: the
+      // api specs register throwaway users, and the users table paginates at 10
+      // rows with no filter (users.html:11), so those extra rows push the seeded
+      // accounts off page 1 and admin-flow can no longer find them. Run them as
+      // two invocations instead — `npm test` does, and each one re-runs the
+      // reseed, so e2e starts from a clean baseline. Do not add
+      // `dependencies: ['e2e']` here to force the order: a dependency failure
+      // SKIPS the dependent project, so one flaky e2e test would silently hide
+      // all of the api results, and every `test:api*` script would drag the full
+      // e2e suite in first.
       dependencies: ['db'],
       use: {
         baseURL: BACKEND_URL,

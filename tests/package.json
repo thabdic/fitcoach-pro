@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright test --project=api --reporter=list && playwright test --project=e2e --reporter=list",
+    "test:e2e": "playwright test --project=e2e",
     "test:api": "playwright test --project=api",
     "test:api:profile": "playwright test --project=api api/specs/profile.spec.ts --reporter=list",
     "test:api:workoutplans": "playwright test --project=api api/specs/workout-plans.spec.ts --reporter=list",
