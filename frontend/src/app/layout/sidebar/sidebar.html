@@ -1,0 +1,20 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <i class="pi pi-bolt"></i>
+    <span>FitCoach <span class="accent">Pro</span></span>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (item of items(); track item.path) {
+      <a
+        class="nav-item"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        [attr.data-testid]="item.testid"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+</aside>

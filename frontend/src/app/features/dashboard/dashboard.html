@@ -1,0 +1,25 @@
+<section class="dashboard">
+  <h1 class="page-title" data-testid="dashboard-title">Dashboard</h1>
+
+  @if (user(); as u) {
+    <p-card styleClass="welcome-card">
+      <div class="welcome">
+        <div>
+          <h2>Welcome, {{ u.name }} 👋</h2>
+          <p class="muted">{{ u.email }}</p>
+        </div>
+        <p-tag [value]="u.role | titlecase" severity="success" />
+      </div>
+    </p-card>
+  }
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else {
+    <div class="stat-grid">
+      @for (card of cards(); track card.label) {
+        <app-stat-card [label]="card.label" [value]="card.value" [icon]="card.icon" [testid]="card.testid" />
+      }
+    </div>
+  }
+</section>

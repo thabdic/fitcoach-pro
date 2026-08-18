@@ -1,0 +1,22 @@
+<header class="topbar">
+  <div class="topbar-spacer"></div>
+
+  @if (user(); as u) {
+    <div class="topbar-user">
+      <p-avatar [label]="initials()" shape="circle" styleClass="topbar-avatar" />
+      <div class="topbar-user-meta">
+        <span class="topbar-user-name">{{ u.name }}</span>
+        <p-tag [value]="u.role" severity="success" />
+      </div>
+    </div>
+  }
+
+  <p-button
+    label="Logout"
+    icon="pi pi-sign-out"
+    severity="secondary"
+    [text]="true"
+    (onClick)="logout()"
+    data-testid="logout-button"
+  />
+</header>

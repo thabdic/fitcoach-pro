@@ -1,0 +1,80 @@
+<section>
+  <h1 class="page-title">My Profile</h1>
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else {
+    <p-card>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="dialog-form">
+        <div class="form-grid">
+          <div class="field">
+            <label for="age">Age</label>
+            <input pInputText id="age" type="number" formControlName="age" />
+            @if (form.controls.age.invalid && form.controls.age.touched) {
+              <small class="error">Age must be between 13 and 120.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="gender">Gender</label>
+            <p-select inputId="gender" formControlName="gender" [options]="genderOptions"
+              optionLabel="label" optionValue="value" [fluid]="true" placeholder="Select" [showClear]="true" />
+          </div>
+
+          <div class="field">
+            <label for="heightCm">Height (cm)</label>
+            <input pInputText id="heightCm" type="number" formControlName="heightCm" />
+            @if (form.controls.heightCm.invalid && form.controls.heightCm.touched) {
+              <small class="error">Height must be between 50 and 300 cm.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="weightKg">Weight (kg)</label>
+            <input pInputText id="weightKg" type="number" formControlName="weightKg" />
+            @if (form.controls.weightKg.invalid && form.controls.weightKg.touched) {
+              <small class="error">Weight must be between 20 and 500 kg.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="goal">Goal</label>
+            <p-select inputId="goal" formControlName="goal" [options]="goalOptions"
+              optionLabel="label" optionValue="value" [fluid]="true" placeholder="Select goal" />
+            @if (form.controls.goal.invalid && form.controls.goal.touched) {
+              <small class="error">Goal is required.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="activityLevel">Activity level</label>
+            <p-select inputId="activityLevel" formControlName="activityLevel" [options]="activityOptions"
+              optionLabel="label" optionValue="value" [fluid]="true" placeholder="Select activity level" />
+            @if (form.controls.activityLevel.invalid && form.controls.activityLevel.touched) {
+              <small class="error">Activity level is required.</small>
+            }
+          </div>
+
+          <div class="field">
+            <label for="injuries">Injuries</label>
+            <input pInputText id="injuries" type="text" formControlName="injuries" placeholder="e.g. left knee" />
+          </div>
+
+          <div class="field">
+            <label for="dietaryPreference">Dietary preference</label>
+            <input pInputText id="dietaryPreference" type="text" formControlName="dietaryPreference" placeholder="e.g. vegetarian" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea class="p-inputtext" id="notes" formControlName="notes" rows="3"></textarea>
+        </div>
+
+        <div>
+          <p-button type="submit" label="Save profile" icon="pi pi-check" [loading]="saving()" data-testid="profile-submit" />
+        </div>
+      </form>
+    </p-card>
+  }
+</section>

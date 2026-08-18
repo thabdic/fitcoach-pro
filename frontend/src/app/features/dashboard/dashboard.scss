@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep .welcome-card {
+  margin-bottom: 1.25rem;
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+  }
+}
+
+.muted {
+  margin: 0;
+  color: #64748b;
+}
+
+.email {
+  margin-top: 0.75rem;
+}

@@ -1,0 +1,59 @@
+<div class="auth-page">
+  <p-card class="auth-card">
+    <div class="auth-head">
+      <span class="auth-brand"><i class="pi pi-bolt"></i> FitCoach <span class="accent">Pro</span></span>
+      <h1>Sign in</h1>
+      <p class="auth-sub">Welcome back — enter your details to continue.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input
+          pInputText
+          id="login-email"
+          type="email"
+          formControlName="email"
+          data-testid="login-email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+          <small class="error">
+            @if (form.controls.email.hasError('required')) { Email is required. }
+            @else if (form.controls.email.hasError('email')) { Enter a valid email address. }
+          </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <p-password
+          inputId="login-password"
+          formControlName="password"
+          data-testid="login-password"
+          [feedback]="false"
+          [toggleMask]="true"
+          [fluid]="true"
+          placeholder="Your password"
+        />
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <small class="error">Password is required.</small>
+        }
+      </div>
+
+      <p-button
+        type="submit"
+        label="Sign in"
+        icon="pi pi-sign-in"
+        [loading]="loading()"
+        [fluid]="true"
+        data-testid="login-submit"
+      />
+    </form>
+
+    <p class="auth-foot">
+      No account? <a routerLink="/register">Create one</a>
+    </p>
+  </p-card>
+</div>

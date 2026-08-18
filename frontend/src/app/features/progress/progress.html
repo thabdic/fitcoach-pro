@@ -1,0 +1,68 @@
+<section>
+  <div class="page-toolbar">
+    <h1 class="page-title">{{ isClient() ? 'My Progress' : 'Client Progress' }}</h1>
+    @if (isClient()) {
+      <p-button label="Log Progress" icon="pi pi-plus" (onClick)="openCreate()" data-testid="create-progress-update" />
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else if (updates().length === 0) {
+    <app-empty-state message="No progress updates yet." icon="pi pi-chart-line" />
+  } @else {
+    <p-table [value]="updates()" data-testid="progress-table" [paginator]="updates().length > 10" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Date</th>
+          <th>Weight (kg)</th>
+          <th>Mood</th>
+          <th>Energy</th>
+          <th>Notes</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-u>
+        <tr>
+          <td>{{ u.createdAt | date: 'medium' }}</td>
+          <td>{{ u.weightKg ?? '—' }}</td>
+          <td>{{ u.mood || '—' }}</td>
+          <td>{{ u.energyLevel ?? '—' }}</td>
+          <td class="cell-sub">{{ u.notes || '—' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</section>
+
+<p-dialog header="Log Progress" [(visible)]="showFormValue" [modal]="true" [style]="{ width: '32rem' }">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="dialog-form">
+    <div class="form-grid">
+      <div class="field">
+        <label for="weightKg">Weight (kg)</label>
+        <input pInputText id="weightKg" type="number" formControlName="weightKg" />
+        @if (form.controls.weightKg.invalid && form.controls.weightKg.touched) {
+          <small class="error">Weight must be between 20 and 500.</small>
+        }
+      </div>
+      <div class="field">
+        <label for="energyLevel">Energy (1–10)</label>
+        <input pInputText id="energyLevel" type="number" formControlName="energyLevel" min="1" max="10" />
+        @if (form.controls.energyLevel.invalid && form.controls.energyLevel.touched) {
+          <small class="error">Energy must be between 1 and 10.</small>
+        }
+      </div>
+      <div class="field">
+        <label for="mood">Mood</label>
+        <input pInputText id="mood" type="text" formControlName="mood" placeholder="e.g. motivated" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="pnotes">Notes</label>
+      <textarea class="p-inputtext" id="pnotes" formControlName="notes" rows="3"></textarea>
+    </div>
+    <div class="row-actions">
+      <p-button type="submit" label="Save" icon="pi pi-check" [loading]="saving()" data-testid="progress-update-submit" />
+      <p-button type="button" label="Cancel" severity="secondary" [text]="true" (onClick)="showForm.set(false)" />
+    </div>
+  </form>
+</p-dialog>

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+*.env
+
+# Build output
+dist/
+backend/dist/
+frontend/dist/
+
+# Angular / tooling caches
+.angular/
+.vite/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+frontend/yarn-add.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+.vscode/
+
+
+.claude/
+
+
+tests/test-results/
+tests/playwright-report/
+tests/blob-report/
+tests/playwright/.cache/
+
+tests/e2e/.auth/
+

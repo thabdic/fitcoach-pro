@@ -1,0 +1,5 @@
+/* Auth page layout is defined globally in styles.scss (.auth-page / .auth-card)
+   so the login and register screens stay visually identical. */
+:host {
+  display: block;
+}

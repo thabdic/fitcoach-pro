@@ -1,0 +1,44 @@
+<section>
+  <h1 class="page-title">{{ isAdmin() ? 'All Clients' : 'My Clients' }}</h1>
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else if (clients().length === 0) {
+    <app-empty-state
+      message="No clients yet. A client appears here once an admin assigns one of their plan requests to you."
+      icon="pi pi-users"
+    />
+  } @else {
+    <p-table [value]="clients()" data-testid="clients-table" [paginator]="clients().length > 10" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Goals</th>
+          <th>Latest request</th>
+          <th>Workout plans</th>
+          <th>Meal plans</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-c>
+        <tr data-testid="client-row">
+          <td class="cell-title">{{ c.name }}</td>
+          <td class="cell-sub">{{ c.email }}</td>
+          <td>{{ c.goals }}</td>
+          <td>
+            @if (c.latestStatus) {
+              <p-tag
+                [value]="c.latestStatus.replace('_', ' ') | titlecase"
+                [severity]="statusSeverity(c.latestStatus)"
+              />
+            } @else {
+              <span class="cell-sub">—</span>
+            }
+          </td>
+          <td>{{ c.workoutPlans }}</td>
+          <td>{{ c.mealPlans }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</section>

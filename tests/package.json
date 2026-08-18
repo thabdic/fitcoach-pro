@@ -1,0 +1,25 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:api:profile": "playwright test --project=api api/specs/profile.spec.ts --reporter=list",
+    "test:api:workoutplans": "playwright test --project=api api/specs/workout-plans.spec.ts --reporter=list",
+    "test:api:planrequests": "playwright test --project=api api/specs/plan-requests.spec.ts --reporter=list",
+    "test:client": "playwright test --project=e2e client-flow.spec.ts --headed --workers=1",
+    "test:admin": "playwright test --project=e2e admin-flow.spec.ts --headed --workers=1",
+    "test:trainer": "playwright test --project=e2e trainer-flow.spec.ts --headed --workers=1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^26.1.1",
+    "dotenv": "^17.4.2",
+    "typescript": "^6.0.3"
+  }
+}

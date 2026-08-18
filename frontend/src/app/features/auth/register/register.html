@@ -1,0 +1,93 @@
+<div class="auth-page">
+  <p-card class="auth-card">
+    <div class="auth-head">
+      <span class="auth-brand"><i class="pi pi-bolt"></i> FitCoach <span class="accent">Pro</span></span>
+      <h1>Create account</h1>
+      <p class="auth-sub">Join as a client or trainer to get started.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <div class="field">
+        <label for="register-name">Full name</label>
+        <input
+          pInputText
+          id="register-name"
+          type="text"
+          formControlName="name"
+          data-testid="register-name"
+          placeholder="Jane Doe"
+          autocomplete="name"
+        />
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <small class="error">
+            @if (form.controls.name.hasError('required')) { Name is required. }
+            @else if (form.controls.name.hasError('minlength')) { Name is too short. }
+          </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="register-email">Email</label>
+        <input
+          pInputText
+          id="register-email"
+          type="email"
+          formControlName="email"
+          data-testid="register-email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+          <small class="error">
+            @if (form.controls.email.hasError('required')) { Email is required. }
+            @else if (form.controls.email.hasError('email')) { Enter a valid email address. }
+          </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="register-password">Password</label>
+        <p-password
+          inputId="register-password"
+          formControlName="password"
+          data-testid="register-password"
+          [toggleMask]="true"
+          [fluid]="true"
+          placeholder="At least 8 characters"
+        />
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <small class="error">
+            @if (form.controls.password.hasError('required')) { Password is required. }
+            @else if (form.controls.password.hasError('minlength')) { Password must be at least 8 characters. }
+          </small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="register-role">I am a</label>
+        <p-select
+          inputId="register-role"
+          formControlName="role"
+          [options]="roleOptions"
+          optionLabel="label"
+          optionValue="value"
+          [fluid]="true"
+          data-testid="register-role"
+        />
+      </div>
+
+      <p-button
+        type="submit"
+        label="Create account"
+        icon="pi pi-user-plus"
+        [loading]="loading()"
+        [fluid]="true"
+        data-testid="register-submit"
+      />
+    </form>
+
+    <p class="auth-foot">
+      Already have an account? <a routerLink="/login">Sign in</a>
+    </p>
+  </p-card>
+</div>

@@ -1,0 +1,43 @@
+<section class="home">
+  <div class="home-header">
+    <h1 data-testid="dashboard-title">Welcome to FitCoach Pro</h1>
+    <p class="home-subtitle">
+      Frontend foundation is up and running. Feature modules arrive in the next phases.
+    </p>
+  </div>
+
+  <div class="grid">
+    <div class="col-12 md:col-4">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-icon"><i class="pi pi-check-circle"></i></div>
+        </ng-template>
+        <h3>Angular ready</h3>
+        <p>Standalone components, routing and SCSS styling are configured.</p>
+        <p-tag value="OK" severity="success" />
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-icon"><i class="pi pi-palette"></i></div>
+        </ng-template>
+        <h3>PrimeNG theme</h3>
+        <p>Aura preset, PrimeIcons and PrimeFlex are wired into the build.</p>
+        <p-tag value="Styled mode" severity="info" />
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="card-icon"><i class="pi pi-server"></i></div>
+        </ng-template>
+        <h3>API connection</h3>
+        <p>Backend runs at <code>http://localhost:4000/api</code>. Services come later.</p>
+        <p-button label="Learn more" icon="pi pi-arrow-right" [text]="true" />
+      </p-card>
+    </div>
+  </div>
+</section>

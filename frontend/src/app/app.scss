@@ -1,0 +1,38 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-ground);
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding: 0 1.5rem;
+  background: #0f172a; // dark sidebar/topbar tone from the design direction
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.app-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  i {
+    color: #10b981; // green accent
+  }
+}
+
+.app-brand-accent {
+  color: #10b981;
+}
+
+.app-content {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}

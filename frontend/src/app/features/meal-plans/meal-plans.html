@@ -1,0 +1,97 @@
+<section>
+  <div class="page-toolbar">
+    <h1 class="page-title">Meal Plans</h1>
+    @if (canManage()) {
+      <p-button label="New Plan" icon="pi pi-plus" (onClick)="openCreate()" data-testid="create-meal-plan" />
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else if (plans().length === 0) {
+    <app-empty-state message="No meal plans yet." icon="pi pi-apple" />
+  } @else {
+    <div class="card-grid">
+      @for (plan of plans(); track plan._id) {
+        <p-card styleClass="plan-card" [attr.data-testid]="'meal-plan-card'">
+          <div class="plan-card-head">
+            <span class="cell-title">{{ plan.title }}</span>
+            <p-tag [value]="plan.status | titlecase" severity="success" />
+          </div>
+          <div class="plan-meta">
+            <p-tag [value]="plan.caloriesTarget + ' kcal'" severity="info" />
+          </div>
+          @if (plan.description) { <p class="cell-sub">{{ plan.description }}</p> }
+          <ul class="plan-list">
+            @for (meal of plan.meals; track $index) {
+              <li>{{ meal.name }}@if (meal.timeOfDay) { ({{ meal.timeOfDay }}) }@if (meal.foods.length) { — {{ meal.foods.join(', ') }} }</li>
+            }
+          </ul>
+          @if (canManage()) {
+            <div class="row-actions">
+              <p-button label="Edit" icon="pi pi-pencil" size="small" [text]="true" (onClick)="openEdit(plan)" />
+              @if (isAdmin()) {
+                <p-button label="Delete" icon="pi pi-trash" size="small" severity="danger" [text]="true" (onClick)="remove(plan)" />
+              }
+            </div>
+          }
+        </p-card>
+      }
+    </div>
+  }
+</section>
+
+<p-dialog [header]="editingId() ? 'Edit Meal Plan' : 'New Meal Plan'" [(visible)]="showFormValue" [modal]="true" [style]="{ width: '46rem' }">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="dialog-form">
+    <div class="form-grid">
+      <div class="field">
+        <label for="mtitle">Title</label>
+        <input pInputText id="mtitle" type="text" formControlName="title" />
+        @if (form.controls.title.invalid && form.controls.title.touched) { <small class="error">Title is required.</small> }
+      </div>
+      <div class="field">
+        <label for="mclientId">Client</label>
+        <p-select inputId="mclientId" formControlName="clientId" [options]="clientOptions()"
+          optionLabel="label" optionValue="value" [fluid]="true" placeholder="Select client" />
+        @if (form.controls.clientId.invalid && form.controls.clientId.touched) { <small class="error">Client is required.</small> }
+      </div>
+      <div class="field">
+        <label for="caloriesTarget">Calories target</label>
+        <input pInputText id="caloriesTarget" type="number" formControlName="caloriesTarget" min="1" />
+        @if (form.controls.caloriesTarget.invalid && form.controls.caloriesTarget.touched) {
+          <small class="error">Must be a positive number.</small>
+        }
+      </div>
+      <div class="field">
+        <label for="mstatus">Status</label>
+        <p-select inputId="mstatus" formControlName="status" [options]="statusOptions"
+          optionLabel="label" optionValue="value" [fluid]="true" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="mdescription">Description</label>
+      <textarea class="p-inputtext" id="mdescription" formControlName="description" rows="2"></textarea>
+    </div>
+
+    <div formArrayName="meals">
+      <div class="page-toolbar" style="margin-bottom: 0.5rem">
+        <label>Meals</label>
+        <p-button type="button" label="Add meal" icon="pi pi-plus" size="small" [text]="true" (onClick)="addMeal()" />
+      </div>
+      @for (ctrl of meals.controls; track $index) {
+        <div class="array-row meal-row" [formGroupName]="$index">
+          <input pInputText formControlName="name" placeholder="Meal name" />
+          <input pInputText formControlName="timeOfDay" placeholder="Time of day" />
+          <input pInputText formControlName="foods" placeholder="Foods (comma separated)" />
+          <p-button type="button" icon="pi pi-trash" severity="danger" [text]="true" (onClick)="removeMeal($index)" />
+        </div>
+      }
+    </div>
+
+    <div class="row-actions">
+      <p-button type="submit" label="Save plan" icon="pi pi-check" [loading]="saving()" data-testid="submit-meal-plan" />
+      <p-button type="button" label="Cancel" severity="secondary" [text]="true" (onClick)="showForm.set(false)" />
+    </div>
+  </form>
+</p-dialog>

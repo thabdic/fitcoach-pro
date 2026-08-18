@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 260px;
+  background: #0f172a; /* slate-900 dark sidebar */
+  color: #cbd5e1;
+  padding: 1.25rem 0.75rem;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f8fafc;
+  padding: 0.5rem 0.75rem 1.25rem;
+
+  i {
+    color: #10b981; /* emerald accent */
+  }
+
+  .accent {
+    color: #10b981;
+  }
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.6rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  i {
+    font-size: 1.05rem;
+    width: 1.25rem;
+    text-align: center;
+  }
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.12);
+    color: #f8fafc;
+  }
+
+  &.active {
+    background: #10b981;
+    color: #06281d;
+  }
+}

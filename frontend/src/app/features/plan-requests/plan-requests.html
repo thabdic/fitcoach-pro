@@ -1,0 +1,90 @@
+<section>
+  <div class="page-toolbar">
+    <h1 class="page-title">{{ isAdmin() ? 'All Plan Requests' : isClient() ? 'My Plan Requests' : 'Plan Requests' }}</h1>
+    @if (isClient()) {
+      <p-button label="Request a Plan" icon="pi pi-plus" (onClick)="openCreate()" data-testid="create-plan-request" />
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="spinner-wrap"><p-progressSpinner strokeWidth="4" /></div>
+  } @else if (requests().length === 0) {
+    <app-empty-state message="No plan requests yet." icon="pi pi-inbox" />
+  } @else {
+    <p-table [value]="requests()" data-testid="plan-requests-table" [paginator]="requests().length > 10" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Goal</th>
+          <th>Status</th>
+          <th>Created</th>
+          @if (canManage()) { <th>Actions</th> }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-r>
+        <tr>
+          <td>
+            <div class="cell-title">{{ r.goal }}</div>
+            @if (r.message) { <div class="cell-sub">{{ r.message }}</div> }
+          </td>
+          <td><p-tag [value]="r.status | titlecase" [severity]="statusSeverity(r.status)" /></td>
+          <td>{{ r.createdAt | date: 'mediumDate' }}</td>
+          @if (canManage()) {
+            <td>
+              <p-button label="Manage" icon="pi pi-cog" size="small" [text]="true" (onClick)="openManage(r)" />
+            </td>
+          }
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</section>
+
+<!-- Create dialog (client) -->
+<p-dialog header="Request a Plan" [(visible)]="showCreateValue" [modal]="true" [style]="{ width: '32rem' }">
+  <form [formGroup]="createForm" (ngSubmit)="submitCreate()" class="dialog-form">
+    <div class="field">
+      <label for="goal">Goal</label>
+      <input pInputText id="goal" type="text" formControlName="goal" placeholder="e.g. Lose 5kg" />
+      @if (createForm.controls.goal.invalid && createForm.controls.goal.touched) {
+        <small class="error">Goal is required.</small>
+      }
+    </div>
+    <div class="field">
+      <label for="message">Message (optional)</label>
+      <textarea class="p-inputtext" id="message" formControlName="message" rows="3"></textarea>
+    </div>
+    <div class="row-actions">
+      <p-button type="submit" label="Send request" icon="pi pi-send" [loading]="creating()" data-testid="submit-plan-request" />
+      <p-button type="button" label="Cancel" severity="secondary" [text]="true" (onClick)="showCreate.set(false)" />
+    </div>
+  </form>
+</p-dialog>
+
+<!-- Manage dialog (admin/trainer) -->
+<p-dialog header="Manage Request" [(visible)]="showManageValue" [modal]="true" [style]="{ width: '34rem' }">
+  @if (selected(); as req) {
+    <div class="dialog-form" [formGroup]="manageForm">
+      <div><span class="cell-sub">Goal</span><div class="cell-title">{{ req.goal }}</div></div>
+
+      @if (isAdmin()) {
+        <div class="field">
+          <label for="trainerId">Assign trainer</label>
+          <div class="row-actions">
+            <p-select inputId="trainerId" formControlName="trainerId" [options]="trainerOptions()"
+              optionLabel="label" optionValue="value" placeholder="Select trainer" [style]="{ flex: '1' }" />
+            <p-button label="Assign" icon="pi pi-user-plus" [loading]="managing()" (onClick)="assignTrainer()" data-testid="assign-trainer" />
+          </div>
+        </div>
+      }
+
+      <div class="field">
+        <label for="status">Update status</label>
+        <div class="row-actions">
+          <p-select inputId="status" formControlName="status" [options]="statusOptions"
+            optionLabel="label" optionValue="value" placeholder="Select status" [style]="{ flex: '1' }" />
+          <p-button label="Update" icon="pi pi-check" [loading]="managing()" (onClick)="updateStatus()" data-testid="update-status" />
+        </div>
+      </div>
+    </div>
+  }
+</p-dialog>
