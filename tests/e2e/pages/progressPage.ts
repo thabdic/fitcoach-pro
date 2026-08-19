@@ -20,12 +20,7 @@ export class ProgressPage {
         this.page = page;
         this.myProgressSideBarButton = this.page.getByTestId('sidebar-progress');
         this.myProgressTablerows = this.page.locator('[data-pc-section="tbody"] tr');
-        // 'My Progress' for a client, 'Client Progress' for a trainer/admin
-        // (progress.html:3) — the cheapest role assertion on this page.
         this.pageTitle = this.page.getByRole('heading',{level:1});
-        // By testid rather than by label, so the same locator can prove the button
-        // is ABSENT for a trainer: it renders only under @if (isClient())
-        // (progress.html:5), and the backend 403s a non-client POST /api/progress.
         this.logProgressButton = this.page.getByTestId('create-progress-update');
         this.logProgressDialog = this.page.getByRole('dialog',{name:'Log Progress'})
         this.weightInput = this.page.locator('#weightKg');

@@ -42,19 +42,10 @@ export class UsersPage {
         return this.rowByEmail(email).getByTestId('toggle-status');
     }
 
-    // exact:true is required — a plain hasText/substring match would be fine for
-    // Client/Trainer/Admin today, but the p-select overlay also mirrors the
-    // selected label, so anchor on the exact option name.
     roleOption(label:string):Locator{
         return this.page.getByRole('option',{name:label,exact:true});
     }
-    /**
-     * One full open -> pick -> save cycle. Must be re-run per change: saveRole()
-     * sets showRole(false) (users.ts:96), so the dialog is GONE after saving and
-     * the p-select cannot be reused for a second change. Waiting for the dialog
-     * to hide also gates on the PATCH resolving, so the table refetch that
-     * follows is already in flight before we assert.
-     */
+
     async setRole(email:string,label:string):Promise<void>{
         await this.changeRoleButton(email).click();
         await this.updateRoleDialog.waitFor({state:'visible'});
